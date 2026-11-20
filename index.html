@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6b6fcf 0%, #a855c8 60%, #c46bb5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ── Clock Card ── */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px 28px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    }
+
+    .clock-card {
+      text-align: center;
+    }
+
+    .clock-time {
+      font-size: 2.6rem;
+      font-weight: 400;
+      color: #6b6fcf;
+      letter-spacing: 2px;
+    }
+
+    .clock-date {
+      font-size: 0.95rem;
+      color: #888;
+      margin: 4px 0 10px;
+    }
+
+    .clock-greeting {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #222;
+    }
+
+    /* ── Bottom row ── */
+    .row {
+      display: flex;
+      gap: 18px;
+    }
+
+    /* ── Focus Timer ── */
+    .timer-card {
+      flex: 1;
+      text-align: center;
+    }
+
+    .timer-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .timer-display {
+      font-size: 2.8rem;
+      font-weight: 400;
+      color: #6b6fcf;
+      margin-bottom: 16px;
+    }
+
+    .timer-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 7px 22px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #6b6fcf;
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #5558b8; }
+
+    .btn-secondary {
+      background: #e9eaf6;
+      color: #6b6fcf;
+    }
+
+    .btn-secondary:hover { background: #d4d5ef; }
+
+    .btn-danger {
+      background: #e95a5a;
+      color: #fff;
+    }
+
+    .btn-danger:hover { background: #c94040; }
+
+    /* ── Tasks ── */
+    .tasks-card {
+      flex: 1.1;
+    }
+
+    .tasks-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .task-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .task-input-row input {
+      flex: 1;
+      padding: 7px 12px;
+      border: 1.5px solid #c5c7e8;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      color: #333;
+    }
+
+    .task-input-row input:focus {
+      border-color: #6b6fcf;
+    }
+
+    .task-input-row input::placeholder {
+      color: #bbb;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+
+    .task-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #6b6fcf;
+      cursor: pointer;
+    }
+
+    .task-item span {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .task-item span.done {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    /* ── Quick Links ── */
+    .links-card {
+      flex: 1;
+    }
+
+    .links-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .links-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .links-input-row input {
+      flex: 1;
+      padding: 7px 10px;
+      border: 1.5px solid #c5c7e8;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      color: #333;
+    }
+
+    .links-input-row input:focus {
+      border-color: #6b6fcf;
+    }
+
+    .links-input-row input::placeholder {
+      color: #bbb;
+    }
+
+    .link-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .link-btn-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .link-btn {
+      background: #6b6fcf;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 18px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: 500;
+      padding-right: 30px;
+    }
+
+    .link-btn:hover { background: #5558b8; }
+
+    .link-remove {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.3);
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .link-remove:hover {
+      background: rgba(255,255,255,0.5);
+      color: #333;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Clock Card -->
+    <div class="card clock-card">
+      <div class="clock-time" id="clockTime">10:45:22</div>
+      <div class="clock-date" id="clockDate">Tuesday, January 27, 2026</div>
+      <div class="clock-greeting" id="clockGreeting">Good Morning</div>
+    </div>
+
+    <!-- Middle Row: Focus Timer + Tasks -->
+    <div class="row">
+      <!-- Focus Timer -->
+      <div class="card timer-card">
+        <div class="timer-label">Focus Timer</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-buttons">
+          <button class="btn btn-primary" onclick="startTimer()">Start</button>
+          <button class="btn btn-secondary" onclick="stopTimer()">Stop</button>
+          <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Tasks -->
+      <div class="card tasks-card">
+        <div class="tasks-label">Tasks</div>
+        <div class="task-input-row">
+          <input type="text" id="taskInput" placeholder="Add a new task..." />
+          <button class="btn btn-primary" onclick="addTask()">Add</button>
+        </div>
+        <div class="task-list" id="taskList">
+          <!-- default tasks -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Row: Quick Links -->
+    <div class="row">
+      <div class="card links-card">
+        <div class="links-label">Quick Links</div>
+        <div class="links-input-row">
+          <input type="text" id="linkName" placeholder="Link name" />
+          <input type="text" id="linkUrl" placeholder="URL" />
+          <button class="btn btn-primary" onclick="addLink()">Add Link</button>
+        </div>
+        <div class="link-buttons" id="linkList">
+          <!-- default links -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ── Clock ── */
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clockTime').textContent = `${h}:${m}:${s}`;
+
+      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const day = days[now.getDay()];
+      const date = now.getDate();
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      document.getElementById('clockDate').textContent = `${day}, ${month} ${date}, ${year}`;
+
+      const hour = now.getHours();
+      let greeting = 'Good Morning';
+      if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+      else if (hour >= 17 && hour < 21) greeting = 'Good Evening';
+      else if (hour >= 21 || hour < 5) greeting = 'Good Night';
+      document.getElementById('clockGreeting').textContent = greeting;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    /* ── Focus Timer ── */
+    let timerSeconds = 25 * 60;
+    let timerInterval = null;
+    let timerRunning = false;
+
+    function formatTime(secs) {
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+    }
+
+    function startTimer() {
+      if (timerRunning) return;
+      timerRunning = true;
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          alert('Focus session complete!');
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 25 * 60;
+      updateTimerDisplay();
+    }
+
+    /* ── Tasks ── */
+    let tasks = [
+      { text: 'belanja', done: false },
+      { text: 'belajar', done: false }
+    ];
+
+    function renderTasks() {
+      const list = document.getElementById('taskList');
+      list.innerHTML = '';
+      tasks.forEach((task, idx) => {
+        const item = document.createElement('div');
+        item.className = 'task-item';
+        item.innerHTML = `
+          <div class="task-item-left">
+            <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask(${idx})" />
+            <span class="${task.done ? 'done' : ''}">${task.text}</span>
+          </div>
+          <button class="btn btn-danger" onclick="deleteTask(${idx})">Delete</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) return;
+      tasks.push({ text, done: false });
+      input.value = '';
+      renderTasks();
+    }
+
+    function deleteTask(idx) {
+      tasks.splice(idx, 1);
+      renderTasks();
+    }
+
+    function toggleTask(idx) {
+      tasks[idx].done = !tasks[idx].done;
+      renderTasks();
+    }
+
+    document.getElementById('taskInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addTask();
+    });
+
+    renderTasks();
+
+    /* ── Quick Links ── */
+    let links = [
+      { name: 'Google', url: 'https://www.google.com' },
+      { name: 'Gmail', url: 'https://mail.google.com' },
+      { name: 'Calendar', url: 'https://calendar.google.com' }
+    ];
+
+    function renderLinks() {
+      const list = document.getElementById('linkList');
+      list.innerHTML = '';
+      links.forEach((link, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'link-btn-wrap';
+        wrap.innerHTML = `
+          <button class="link-btn" onclick="window.open('${link.url}', '_blank')">${link.name}</button>
+          <button class="link-remove" onclick="removeLink(${idx})">✕</button>
+        `;
+        list.appendChild(wrap);
+      });
+    }
+
+    function addLink() {
+      const name = document.getElementById('linkName').value.trim();
+      const url  = document.getElementById('linkUrl').value.trim();
+      if (!name || !url) return;
+      links.push({ name, url: url.startsWith('http') ? url : 'https://' + url });
+      document.getElementById('linkName').value = '';
+      document.getElementById('linkUrl').value = '';
+      renderLinks();
+    }
+
+    function removeLink(idx) {
+      links.splice(idx, 1);
+      renderLinks();
+    }
+
+    renderLinks();
+  </script>
+</body>
+</html>
